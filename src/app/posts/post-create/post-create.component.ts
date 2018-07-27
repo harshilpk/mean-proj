@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 import { Post } from '../posts.model';
 
@@ -13,12 +14,14 @@ export class PostCreateComponent {
   @Output() postCreated =  new EventEmitter<Post>();
   // newPost = 'No Content';
 
-  onAddPost() {
-
+  onAddPost(postForm: NgForm ) {
+    if (postForm.invalid) {
+      return;
+    }
     // this.newPost = this.enteredValue;
     const post: Post = {
-      title: this.enteredTitle,
-      content: this.enteredContent
+      title: postForm.value.title,
+      content: postForm.value.content
     };
     this.postCreated.emit(post);
   }
