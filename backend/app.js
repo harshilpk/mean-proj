@@ -20,7 +20,7 @@ app.post('/api/posts', (req,res,next) => {
     message: 'Posts added successfully'
   });
 });
-app.use('/api/posts',(req,res,next) => {
+app.get('/api/posts',(req,res,next) => {
   const posts = [
     { id: 'ehwufhre362',
     title: 'First server=side post',
