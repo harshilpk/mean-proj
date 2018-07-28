@@ -1,10 +1,23 @@
 const express =  require('express');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+const Post = require('./models/post');
 
 const app = express();
 
+// Connecting to the database
+
+mongoose.connect('mongodb://localhost/meanproj')
+.then(() => {
+  console.log('Connected to database successfully!!')
+})
+.catch((error) => {
+  console.log("Failed to connect to Database!!");
+});
+
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false}));
 
 app.use((req,res,next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -14,8 +27,11 @@ app.use((req,res,next) => {
 });
 
 app.post('/api/posts', (req,res,next) => {
-  const post = req.body;
-  console.log(post);
+  const post = new Post({
+    title: req.body.title,
+    content: req.body.content
+  });
+  post.save();
   res.status(201).json({
     message: 'Posts added successfully'
   });
