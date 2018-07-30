@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Post } from '../posts.model';
 import { PostsService } from '../posts.service';
 import { ActivatedRoute, ParamMap } from '../../../../node_modules/@angular/router';
+import { ExtType } from './ext-type.validator';
 
 @Component({
   templateUrl: './post-create.component.html',
@@ -30,7 +31,7 @@ export class PostCreateComponent implements OnInit {
       this.form = new FormGroup({
         'title': new FormControl(null, {validators: [Validators.required, Validators.minLength(5)]}),
         'content': new FormControl(null, {validators: [Validators.required]}),
-        'image': new FormControl(null, {validators: [Validators.required]})
+        'image': new FormControl(null, {validators: [Validators.required], asyncValidators: [ExtType]})
       });
       this.route.paramMap.subscribe((paramMap: ParamMap ) => {
         if (paramMap.has('postId')) {
