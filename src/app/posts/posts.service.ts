@@ -41,17 +41,22 @@ export class PostsService {
     return this.http.get<{_id: string, title: string, content: string}>('http://localhost:3000/api/posts/' + id);
   }
 
-  addPost(post: Post) {
-    const postAdded: Post = {
-      id: null,
-      title: post.title,
-      content: post.content
-    };
+  addPost(post: Post, image: File) {
+    // const postAdded: Post = {
+    //   id: null,
+    //   title: post.title,
+    //   content: post.content
+    // };
+    const postAdded = new FormData();
+    postAdded.append('title', post.title);
+    postAdded.append('content', post.content);
+    postAdded.append('image', image, post.title);
     this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts/', postAdded)
       .subscribe((responseData) => {
+        const postAdd: Post = {id: responseData.postId, title: post.title, content: post.content };
         const id = responseData.postId;
-        postAdded.id = id;
-        this.posts.push(postAdded);
+        postAdd.id = id;
+        this.posts.push(postAdd);
         this.postsUpdated.next([...this.posts]);
         this.router.navigate(['/']);
       });

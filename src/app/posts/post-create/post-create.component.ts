@@ -55,9 +55,9 @@ export class PostCreateComponent implements OnInit {
     }
 
   onAddPost() {
-    if (this.form.invalid) {
-      return;
-    }
+    // if (this.form.invalid) {
+    //   return;
+    // }
     // this.newPost = this.enteredValue;
     const post: Post = {
       id: null,
@@ -67,7 +67,7 @@ export class PostCreateComponent implements OnInit {
     this.isLoading = true;
     // this.postCreated.emit(post);
     if (this.mode === 'create') {
-      this.postsService.addPost(post);
+      this.postsService.addPost(post, this.form.value.image);
     } else {
       this.postsService.updatePost(this.postId, post);
     }
