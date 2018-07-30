@@ -15,6 +15,7 @@ export class PostCreateComponent implements OnInit {
   enteredTitle = '';
   private mode = 'create';
   private postId: string;
+  isLoading = false;
   post: Post;
   // @Output() postCreated =  new EventEmitter<Post>();
   // newPost = 'No Content';
@@ -27,10 +28,12 @@ export class PostCreateComponent implements OnInit {
         if (paramMap.has('postId')) {
           this.mode = 'edit';
           this.postId = paramMap.get('postId');
+          this.isLoading  = true;
           // console.log(this.postId);
           // this.post = this.postsService.getPost(this.postId);
           this.postsService.getPost(this.postId).subscribe(
             (postData => {
+              this.isLoading = false;
               this.post = {id: postData._id, title: postData.title, content: postData.content};
             })
           );
@@ -51,6 +54,7 @@ export class PostCreateComponent implements OnInit {
       title: postForm.value.title,
       content: postForm.value.content
     };
+    this.isLoading = true;
     // this.postCreated.emit(post);
     if (this.mode === 'create') {
       this.postsService.addPost(post);

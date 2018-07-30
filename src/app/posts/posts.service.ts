@@ -4,13 +4,15 @@ import { map } from 'rxjs/operators';
 
 import { Post } from './posts.model';
 import { Injectable } from '../../../node_modules/@angular/core';
+import { Router } from '../../../node_modules/@angular/router';
 
 @Injectable()
 export class PostsService {
   private posts: Post[] = [];
   private postsUpdated = new Subject<Post[]>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,
+              private router: Router) {}
 
   getPosts() {
     // return [...this.posts]; // does not return the actual array. Can also use splice
@@ -51,6 +53,7 @@ export class PostsService {
         postAdded.id = id;
         this.posts.push(postAdded);
         this.postsUpdated.next([...this.posts]);
+        this.router.navigate(['/']);
       });
 
     // console.log(this.posts);
@@ -69,6 +72,7 @@ export class PostsService {
       updatedPosts[oldPostIndex] = updatedpost;
       this.posts = updatedPosts;
       this.postsUpdated.next([...this.posts]);
+      this.router.navigate(['/']);
     });
   }
 

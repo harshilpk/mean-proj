@@ -1,4 +1,5 @@
-<mat-accordion *ngIf="posts.length > 0"><!-- can add multi= true to view more than one panel at a time-->
+<mat-spinner *ngIf="isLoading"></mat-spinner>
+<mat-accordion *ngIf="posts.length > 0 && !isLoading"><!-- can add multi= true to view more than one panel at a time-->
   <mat-expansion-panel *ngFor="let post of posts">
     <mat-expansion-panel-header>
       <!-- The expansion title! -->
@@ -12,4 +13,4 @@
       </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
-<p class ="text mat-body-1" *ngIf="posts.length <= 0">No posts added yet!!</p>
+<p class ="text mat-body-1" *ngIf="posts.length <= 0 && !isLoading">No posts added yet!!</p>
