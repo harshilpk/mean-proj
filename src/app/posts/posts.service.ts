@@ -14,7 +14,7 @@ export class PostsService {
 
   getPosts() {
     // return [...this.posts]; // does not return the actual array. Can also use splice
-    this.http.get<{message: string, posts: any}>('http://localhost:3000/api/posts')
+    this.http.get<{message: string, posts: any}>('http://localhost:3000/api/posts/')
     .pipe(map((postData) => {
       return postData.posts.map(post => {
         return {
@@ -36,7 +36,7 @@ export class PostsService {
 
   getPost(id: string) {
     // return {...this.posts.find(p => p.id === id)};
-    return this.http.get<{_id: string, title: string, content: string}>('http://localhost:3000/api/posts' + id);
+    return this.http.get<{_id: string, title: string, content: string}>('http://localhost:3000/api/posts/' + id);
   }
 
   addPost(post: Post) {
@@ -45,7 +45,7 @@ export class PostsService {
       title: post.title,
       content: post.content
     };
-    this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts', postAdded)
+    this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts/', postAdded)
       .subscribe((responseData) => {
         const id = responseData.postId;
         postAdded.id = id;
