@@ -8,7 +8,8 @@ import { MatCardModule,
           MatFormFieldModule,
           MatInputModule,
           MatExpansionModule,
-          MatProgressSpinnerModule} from '@angular/material';
+          MatProgressSpinnerModule,
+          MatPaginatorModule} from '@angular/material';
 import { HttpClientModule } from '../../node_modules/@angular/common/http';
 
 import { AppComponent } from './app.component';
@@ -36,6 +37,7 @@ import { AppRoutingModule } from './app.routing.module';
     MatFormFieldModule,
     MatInputModule,
     MatExpansionModule,
+    MatPaginatorModule,
     HttpClientModule,
     MatProgressSpinnerModule
   ],

@@ -9,27 +9,30 @@ import { Router } from '../../../node_modules/@angular/router';
 @Injectable()
 export class PostsService {
   private posts: Post[] = [];
-  private postsUpdated = new Subject<Post[]>();
+  private postsUpdated = new Subject<{posts: Post[], postCount: number}>();
 
   constructor(private http: HttpClient,
               private router: Router) {}
 
-  getPosts() {
+  getPosts(postsPerPage: number, currentPage: number) {
+    const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
     // return [...this.posts]; // does not return the actual array. Can also use splice
-    this.http.get<{message: string, posts: any}>('http://localhost:3000/api/posts/')
+    this.http.get<{message: string, posts: any, maxPosts: number}>('http://localhost:3000/api/posts/' + queryParams)
     .pipe(map((postData) => {
-      return postData.posts.map(post => {
+      return {posts: postData.posts.map(post => {
         return {
           title: post.title,
           content: post.content,
           id: post._id,
           imagePath: post.imagePath
         };
-      });
+      }),
+      maxPosts: postData.maxPosts
+    };
     }))
-    .subscribe((transformedPosts) => {
-      this.posts = transformedPosts;
-      this.postsUpdated.next([...this.posts]);
+    .subscribe((transformedPostData) => {
+      this.posts = transformedPostData.posts;
+      this.postsUpdated.next({posts: [...this.posts], postCount: transformedPostData.maxPosts});
     });
   }
 
@@ -55,17 +58,17 @@ export class PostsService {
     postAdded.append('image', image, post.title);
     this.http.post<{message: string, post1: Post}>('http://localhost:3000/api/posts/', postAdded)
       .subscribe((responseData) => {
-        console.log(responseData.post1);
-        const postAdd: Post = {
-          id: responseData.post1.id,
-          title: post.title,
-          content: post.content,
-          imagePath: responseData.post1.imagePath
-         };
-        const id = responseData.post1.id;
-        postAdd.id = id;
-        this.posts.push(postAdd);
-        this.postsUpdated.next([...this.posts]);
+        // console.log(responseData.post1);
+        // const postAdd: Post = {
+        //   id: responseData.post1.id,
+        //   title: post.title,
+        //   content: post.content,
+        //   imagePath: responseData.post1.imagePath
+        //  };
+        // const id = responseData.post1.id;
+        // postAdd.id = id;
+        // this.posts.push(postAdd);
+        // this.postsUpdated.next([...this.posts]);
         this.router.navigate(['/']);
       });
 
@@ -91,29 +94,29 @@ export class PostsService {
     // };
     this.http.put('http://localhost:3000/api/posts/' + id, postData)
     .subscribe(response => {
-      const updatedPosts = [...this.posts];
-      const oldPostIndex = updatedPosts.findIndex(p => p.id === post.id);
-      const postUpdated: Post = {
-        id: id,
-        title: post.title,
-        content: post.content,
-        imagePath: ''
-       };
-      updatedPosts[oldPostIndex] = postUpdated;
-      this.posts = updatedPosts;
-      this.postsUpdated.next([...this.posts]);
+      // const updatedPosts = [...this.posts];
+      // const oldPostIndex = updatedPosts.findIndex(p => p.id === post.id);
+      // const postUpdated: Post = {
+      //   id: id,
+      //   title: post.title,
+      //   content: post.content,
+      //   imagePath: ''
+      //  };
+      // updatedPosts[oldPostIndex] = postUpdated;
+      // this.posts = updatedPosts;
+      // this.postsUpdated.next([...this.posts]);
       this.router.navigate(['/']);
     });
   }
 
   deletePost(postId: string) {
     console.log(postId);
-    this.http.delete('http://localhost:3000/api/posts/' + postId)
-    .subscribe(() => {
-      const updatedPosts = this.posts.filter(post => post.id !== postId);
-      this.posts = updatedPosts;
-      this.postsUpdated.next([...this.posts]);
-    });
+    return this.http.delete('http://localhost:3000/api/posts/' + postId);
+    // .subscribe(() => {
+    //   const updatedPosts = this.posts.filter(post => post.id !== postId);
+    //   this.posts = updatedPosts;
+    //   this.postsUpdated.next([...this.posts]);
+    // });
   }
 
 }
