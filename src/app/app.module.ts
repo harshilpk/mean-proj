@@ -20,6 +20,7 @@ import { PostsService } from './posts/posts.service';
 import { AppRoutingModule } from './app.routing.module';
 import { LoginComponent } from './auth/login/login.component';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
+import { AuthService } from './auth/auth.service';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,7 @@ import { SignUpComponent } from './auth/sign-up/sign-up.component';
     MatProgressSpinnerModule,
     FormsModule
   ],
-  providers: [PostsService],
+  providers: [PostsService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
