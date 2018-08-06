@@ -12,7 +12,7 @@ export class PostsService {
   private postsUpdated = new Subject<{posts: Post[], postCount: number}>();
 
   constructor(private http: HttpClient,
-              private router: Router,) {}
+              private router: Router) {}
 
   getPosts(postsPerPage: number, currentPage: number) {
     const queryParams = `?pagesize=${postsPerPage}&page=${currentPage}`;
@@ -24,13 +24,15 @@ export class PostsService {
           title: post.title,
           content: post.content,
           id: post._id,
-          imagePath: post.imagePath
+          imagePath: post.imagePath,
+          creator: post.creator
         };
       }),
       maxPosts: postData.maxPosts
     };
     }))
     .subscribe((transformedPostData) => {
+      console.log(transformedPostData);
       this.posts = transformedPostData.posts;
       this.postsUpdated.next({posts: [...this.posts], postCount: transformedPostData.maxPosts});
     });
@@ -42,7 +44,8 @@ export class PostsService {
 
   getPost(id: string) {
     // return {...this.posts.find(p => p.id === id)};
-    return this.http.get<{_id: string, title: string, content: string, imagePath: string}>('http://localhost:3000/api/posts/' + id);
+    return this.http.get<{_id: string,
+                          title: string, content: string, imagePath: string, creator: string}>('http://localhost:3000/api/posts/' + id);
   }
 
   addPost(post: Post, image: File) {
@@ -84,7 +87,7 @@ export class PostsService {
       postData.append('content', post.content);
       postData.append('image', image, post.title);
     } else {
-      postData = {id: id, title: post.title, content: post.content, imagePath: image};
+      postData = {id: id, title: post.title, content: post.content, imagePath: image, creator: null};
     }
     // const updatedpost: Post = {
     //   id: id,
