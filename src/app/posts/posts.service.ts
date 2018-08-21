@@ -3,8 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 
 import { Post } from './posts.model';
-import { Injectable } from '../../../node_modules/@angular/core';
-import { Router } from '../../../node_modules/@angular/router';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
 const BACKEND_URL = environment.apiUrl + '/posts/';

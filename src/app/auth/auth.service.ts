@@ -1,9 +1,9 @@
-import { Injectable } from '../../../node_modules/@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AuthData } from './auth-data.model';
 
 import { Subject } from 'rxjs';
-import { Router } from '../../../node_modules/@angular/router';
+import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 
 const BACKEND_URL = environment.apiUrl + '/user/';

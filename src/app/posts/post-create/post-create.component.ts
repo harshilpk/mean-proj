@@ -3,9 +3,9 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { Post } from '../posts.model';
 import { PostsService } from '../posts.service';
-import { ActivatedRoute, ParamMap } from '../../../../node_modules/@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ExtType } from './ext-type.validator';
-import { Subscription } from '../../../../node_modules/rxjs';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
