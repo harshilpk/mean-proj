@@ -10,7 +10,8 @@ const app = express();
 
 // Connecting to the database
 
-mongoose.connect('mongodb://localhost/meanproj')
+// mongoose.connect('mongodb://localhost/meanproj')
+mongoose.connect('mongodb+srv://Harshilpk:' + process.env.MONGO_ATLAS_PW + '@cluster0-mxuat.mongodb.net/test?')
 .then(() => {
   console.log('Connected to database successfully!!')
 })
@@ -20,7 +21,7 @@ mongoose.connect('mongodb://localhost/meanproj')
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
-app.use("/images", express.static(path.join("backend/images")));
+app.use("/images", express.static(path.join("images")));
 
 app.use((req,res,next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
